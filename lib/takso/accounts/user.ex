@@ -6,7 +6,6 @@ defmodule Takso.Accounts.User do
     field :name, :string
     field :username, :string
     field :password, :string
-
     timestamps()
   end
 
