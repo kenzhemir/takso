@@ -1,0 +1,18 @@
+<h2>Listing summaries</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Taxi</th>
+      <th>Count</th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for {taxi, count} <- @tuples do %>
+    <tr>
+      <td><%= taxi %></td>
+      <td><%= count %></td>
+    </tr>
+<% end %>
+  </tbody>
+</table>

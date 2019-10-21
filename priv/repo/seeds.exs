@@ -9,9 +9,14 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
-alias Takso.{Repo, Accounts.User}
+alias Takso.{Repo, Accounts.User, Sales.Taxi}
 
 [%{name: "Fred Flintstone", username: "fred", password: "parool"},
  %{name: "Barney Rubble", username: "barney", password: "parool"}]
 |> Enum.map(fn user_data -> User.changeset(%User{}, user_data) end)
+|> Enum.each(fn changeset -> Repo.insert!(changeset) end)
+
+[%{username: "Tommy Angelo", location: "Narva mnt., 3", status: "available"},
+ %{username: "Daniel Morales", location: "Liivi 2", status: "available"}]
+|> Enum.map(fn taxi_data -> Taxi.changeset(%Taxi{}, taxi_data) end)
 |> Enum.each(fn changeset -> Repo.insert!(changeset) end)
