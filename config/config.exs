@@ -22,6 +22,10 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
+config :takso, Takso.Guardian,
+  issuer: "takso",
+  secret_key: "wP9aV1iwQAgAn+gBW7COuNDFpwe4AEH+HZF5pUWCBDgEcdVuqOnCFH0TdC1h4zdO" # put the result of running `mix guardian.gen.secret`
+
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 

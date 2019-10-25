@@ -6,7 +6,8 @@ defmodule TaksoWeb.BookingController do
   alias Takso.Repo
 
   def index(conn, _params) do
-    bookings = Repo.all(from b in Booking, where: b.user_id == ^conn.assigns.current_user.id)
+    user = Takso.Authentication.load_current_user(conn)
+    bookings = Repo.all(from b in Booking, where: b.user_id == ^user.id)
     render conn, "index.html", bookings: bookings
   end
 
@@ -16,7 +17,7 @@ defmodule TaksoWeb.BookingController do
   end
 
   def create(conn, %{"booking" => booking_params}) do
-    user = conn.assigns.current_user
+    user = Takso.Authentication.load_current_user(conn)
 
     booking_struct = Ecto.build_assoc(user, :bookings, Enum.map(booking_params, fn({key, value}) -> {String.to_atom(key), value} end))
     changeset = Booking.changeset(booking_struct, %{})
