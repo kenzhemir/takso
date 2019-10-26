@@ -33,8 +33,8 @@ defmodule WhiteBreadContext do
     {:ok, state}
   end
   and_ ~r/^I enter the booking information$/, fn state ->
-    fill_field({:id, "pickup_address"}, state[:pickup_address])
-    fill_field({:id, "dropoff_address"}, state[:dropoff_address])
+    fill_field({:id, "booking_pickup_address"}, state[:pickup_address])
+    fill_field({:id, "booking_dropoff_address"}, state[:dropoff_address])
     {:ok, state}
   end
   when_ ~r/^I submit the booking request$/, fn state ->

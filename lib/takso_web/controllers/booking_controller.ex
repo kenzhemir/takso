@@ -27,16 +27,15 @@ defmodule TaksoWeb.BookingController do
 
     query = from t in Taxi, where: t.status == "available", select: t
     available_taxis = Repo.all(query)
-
     if length(available_taxis) > 0 do
-      taxi = List.first(available_taxis)
+      taxi = available_taxis |> Enum.min_by(fn x -> Takso.Geolocation.distance(x.location, booking_params["pickup_address"]) end)
       Multi.new
       |> Multi.insert(:allocation, Allocation.changeset(%Allocation{}, %{status: "accepted"}) |> Changeset.put_change(:booking_id, booking.id) |> Changeset.put_change(:taxi_id, taxi.id))
       |> Multi.update(:taxi, Taxi.changeset(taxi, %{}) |> Changeset.put_change(:status, "busy"))
       |> Multi.update(:booking, Booking.changeset(booking, %{}) |> Changeset.put_change(:status, "allocated"))
       |> Repo.transaction
       conn
-      |> put_flash(:info, "Your taxi will arrive in 5 minutes")
+      |> put_flash(:info, "Your taxi will arrive in 8 minutes")
       |> redirect(to: Routes.booking_path(conn, :new))
     else
       Booking.changeset(booking) |> Changeset.put_change(:status, "rejected")
